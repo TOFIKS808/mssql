@@ -1,0 +1,22 @@
+networks:
+  default:
+    name: ${PROJECT_NAME}
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+
+services:
+  mssql:
+    build: docker
+    container_name: "${PROJECT_NAME}_mssql"
+    ports:
+      - "${LOCALHOST_MSSQL_PORT}:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_DB_PASS}
+      - MSSQL_PID=Developer
+    volumes:
+      - ${VOLUMES_DIR}/data:/var/opt/mssql/data
+      - ${VOLUMES_DIR}/log:/var/opt/mssql/log
+      - ${VOLUMES_DIR}/secrets:/var/opt/mssql/secrets
+      - ${VOLUMES_DIR}/backup:/backup
